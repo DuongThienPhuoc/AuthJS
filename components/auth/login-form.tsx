@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as z from 'zod'
 import CardWrapper from "@/components/auth/card-wrapper";
 import {useForm} from "react-hook-form";
@@ -13,6 +13,7 @@ import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
 import {login} from "@/actions/login";
 import {useTransition} from "react";
+import {useSearchParams} from "next/navigation";
 
 export function LoginForm() {
     const [error, setError] = useState<string | undefined>('');
@@ -26,6 +27,14 @@ export function LoginForm() {
     });
 
     const [isPending, startTransition] = useTransition();
+    const searchParams = useSearchParams()
+
+    const errParams = searchParams.get('error')
+
+    useEffect(() => {
+        if (errParams) setError(handleLoginError(errParams))
+    }, [errParams]);
+
 
     const onSubmit = (value: z.infer<typeof LoginSchema>) => {
         setError('')
@@ -33,6 +42,7 @@ export function LoginForm() {
         startTransition(async () => {
             const data = await login(value)
             setError(data?.error)
+            setSuccess(data?.success)
         })
     }
 
@@ -76,4 +86,14 @@ export function LoginForm() {
             </Form>
         </CardWrapper>
     );
+}
+
+function handleLoginError(err: string) {
+    if (err === 'OAuthCallbackError') {
+        return 'Opp! Something wrong'
+    } else if (err === 'OAuthAccountNotLinked') {
+        return 'Email already in user'
+    } else {
+        return "An error occurred. Please try again later."
+    }
 }

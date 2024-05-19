@@ -63,6 +63,19 @@ export default {
             token.role = user.role;
 
             return token
+        },
+        async signIn({user, account}) {
+            // Allow OAuth with email verification
+            if (account?.provider !== 'credentials') {
+                return true;
+            }
+            const exitingUser = await findUserById(user.id);
+            //Todo: Prevent sign in without email verification
+            if (!exitingUser?.emailVerified) {
+                return false
+            }
+            //Todo: Add 2FA check
+            return true
         }
     },
     events: {
@@ -81,7 +94,7 @@ export default {
         }
     },
     pages: {
-        signIn: '/auth/error',
+        signIn: '/auth/login',
         error: '/auth/error',
     }
 } satisfies NextAuthConfig
