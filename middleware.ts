@@ -8,6 +8,7 @@ import {
 } from '@/route'
 import {NextResponse} from "next/server";
 
+
 export const {auth} = NextAuth(authConfig)
 
 export default auth(req => {
@@ -16,6 +17,7 @@ export default auth(req => {
     const isApiAuth = nextUrl.pathname.startsWith(apiAuthPrefix)
     const isPublicAuth = publicRoutes.includes(nextUrl.pathname)
     const isAuthRoute = authRoutes.includes(nextUrl.pathname)
+
     if (isApiAuth) {
         return NextResponse.next();
     }

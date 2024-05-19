@@ -5,8 +5,8 @@ import {DEFAULT_LOGIN_REDIRECT} from "@/route";
 export default async function SettingPage() {
     const session = await auth()
     return (
-        <div>
-            {JSON.stringify(session)}
+        <div className='w-full flex flex-col justify-center items-center'>
+            <h1>Protect Screen</h1>
             <form action={async () => {
                 'use server'
                 await signOut({redirectTo: DEFAULT_LOGIN_REDIRECT})
