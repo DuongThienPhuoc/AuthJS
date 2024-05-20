@@ -5,7 +5,6 @@ import {LoginSchema} from "@/schemas";
 import {signIn} from "@/auth";
 import {DEFAULT_SUCCESS_LOGIN_REDIRECT} from "@/route";
 import {AuthError} from "next-auth";
-import {generateVerificationToken} from "@/lib/token";
 import {getUserByEmail} from "@/data/user";
 import {AccessDenied} from "@auth/core/errors";
 

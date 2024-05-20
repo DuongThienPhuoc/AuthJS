@@ -14,6 +14,7 @@ import {FormSuccess} from "@/components/form-success";
 import {login} from "@/actions/login";
 import {useTransition} from "react";
 import {useSearchParams} from "next/navigation";
+import Link from "next/link";
 
 export function LoginForm() {
     const [error, setError] = useState<string | undefined>('');
@@ -42,7 +43,7 @@ export function LoginForm() {
         startTransition(async () => {
             const data = await login(value)
             setError(data?.error)
-            setSuccess(data?.success)
+            // setSuccess(data?.success)
         })
     }
 
@@ -73,6 +74,9 @@ export function LoginForm() {
                                 <FormControl>
                                     <Input {...field} type='password'/>
                                 </FormControl>
+                                <Button size='sm' variant='link' asChild className='px-0 font-normal'>
+                                    <Link href='/auth/reset'>Forgot Password?</Link>
+                                </Button>
                                 <FormMessage/>
                             </FormItem>
                         )}/>
